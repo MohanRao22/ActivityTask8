@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Task (Day-9)</title>
+</head>
+<body>
+    
+
+    <script>
+
+// Restcountries API
+
+var req = new XMLHttpRequest();
+req.open("GET","https://restcountries.com/v3.1/all");
+req.send();
+req.responseType = "json";
+req.onload = () => {
+    var data = req.response;
+    // console.log(data);
+
+    /**
+     * Get all the countries from Asia continent /region using Filter function
+     * */
+     console.log("The countries from Asia continent /region");
+     var asiaCountry = data.filter((ele) => {
+          if(ele.continents == "Asia"){
+              return ele.name.common;
+          }
+     });
+     console.log(asiaCountry);
+
+
+     /**
+      * Get all the countries with a population of less than 2 lakhs using Filter function
+      * */
+     console.log("The countries with a population of less than 2 lakhs");
+     var lessThanTwoLacPop = data.filter((value) =>{
+            if(value.population < 2_00_000){
+                return value.name.common;
+            }
+     }).map((ele)=> {
+         return `${ele.name.common} <====> ${ele.population}`;
+     });
+     console.log(lessThanTwoLacPop);
+
+     /**
+      *  Print the following details name, capital, flag using forEach function
+      * forEach() --> returns undefined
+      * */
+      console.log("The following details name, capital, flag of all countries");
+        data.forEach((ele) => {
+          console.log(`Country Name : ${ele.name.common} : Capital Name : ${ele.capital} Flag : ${ele.flags.png}`);
+         });
+     
+
+     /**
+      * Print the total population of countries using reduce function
+      * */
+      console.log("The  total population of countries is:-");
+     var totalPopulation = data.reduce((initialValue, current)=>{
+         return initialValue + current.population;
+     },0);
+   console.log(totalPopulation);
+
+
+   /**
+    *  Print the country which uses US Dollars as currency.
+    * */
+    console.log("The country which uses US Dollars as currency:");
+    
+   var usDollarCountry = data.filter((ele)=>{
+             if(ele.currencies && ele.currencies.USD){
+    return  ele.name;
+     }
+           
+   }).map((ele)=>{
+       return ele.name.common;
+   });
+
+console.log(usDollarCountry);
+
+}
+
+    </script>
+</body>
+</html>
